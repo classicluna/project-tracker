@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import ProjectForm from './components/ProjectForm';
+import ProjectList from './components/ProjectList';
+import ProjectTimeline from './components/ProjectTimeline';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [projects, setProjects] = useState([]);
+
+  const addProject = (project) => {
+    setProjects([...projects, project]);
+  };
+
+  const deleteProject = (projectId) => {
+    setProjects(projects.filter((project) => project.id !== projectId));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <h1>Project Progress Tracker</h1>
+      <ProjectForm addProject={addProject} />
+      <ProjectList projects={projects} deleteProject={deleteProject} />
+      {projects.map((project) => (
+        <ProjectTimeline key={project.id} project={project} />
+      ))}
     </div>
   );
-}
+};
 
 export default App;
